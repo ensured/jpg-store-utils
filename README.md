@@ -1,2 +1,4 @@
 
-Adds floor price on the nft card for each and all NFTs on /marketplace
+calculates the floor price (in ada) for each nft card then displays it on each card.
+
+
