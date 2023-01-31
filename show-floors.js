@@ -22,22 +22,22 @@ const getFloor = async (policyId) => {
     return data.floor
 }
 
-
-let spansPerPage = 24;
-let spansLength = 24;
-let lastSpanLength = 24;
+let spansPerPage = 25;
+let spansLength = 25;
+let lastSpanLength = 25;
 setInterval( async () => {
     if (document.URL.includes("/marketplace")) {
-        let loadedSpans = document.querySelectorAll("#marketplace > div.infinite-scroll-component__outerdiv > div > div.grid.styles_cardsContainer__5WYMt > span")
-        spansLength = loadedSpans.length
+        let spans = document.querySelectorAll("#asset-card")
+        spansLength = spans.length
         if (spansLength > spansPerPage) {
             // console.log("new page")
             let i = spansPerPage
             for (i; i < spansLength; i++) {
                 try {
-                    if (loadedSpans[i-1].querySelector(".floor")) continue;
-                    const policy = document.querySelector(`#marketplace > div.infinite-scroll-component__outerdiv > div > div.grid.styles_cardsContainer__5WYMt > span:nth-child(${i}) > div > a`).href.split("/")[4].slice(0,56)
-                    const floor = await getFloor(policy) / 1000000
+                    if (spans[i-1].querySelector(".floor")) continue;
+                    const assetId = spans[i-1].getAttribute('asset_id');
+                    const first56Chars = assetId.substring(0, 56);
+                    const floor = await getFloor(first56Chars) / 1000000
                     let test = new Number(floor)
                     test = test.toLocaleString("en-US")
                     console.log(test);
@@ -58,12 +58,13 @@ setInterval( async () => {
             let i = spansPerPage - lastSpanLength
             for (i; i < spansLength; i++) {
                 try {
-                    if (loadedSpans[i-1].querySelector(".floor")) continue;
-                    const policy = document.querySelector(`#marketplace > div.infinite-scroll-component__outerdiv > div > div.grid.styles_cardsContainer__5WYMt > span:nth-child(${i}) > div > a`).href.split("/")[4].slice(0,56)
-                    const floor = await getFloor(policy) / 1000000
+                    if (spans[i-1].querySelector(".floor")) continue;
+                    const assetId = spans[i-1].getAttribute('asset_id');
+                    const first56Chars = assetId.substring(0, 56);
+                    console.log(first56Chars);
+                    const floor = await getFloor(first56Chars) / 1000000
                     let test = new Number(floor)
                     test = test.toLocaleString("en-US")
-                    console.log(test);
                     
                     const footer = document.querySelectorAll(".NFTMarketplaceCard_nftMarketplaceCardFooter__tEife")[i-1]
                     if (footer.querySelector(".floor")) continue;
@@ -79,3 +80,11 @@ setInterval( async () => {
         }
     }
 }, 800);
+
+// setInterval(() => {
+//     try {
+//         document.querySelector("#app > div.navbar_navContainer__TK0O8 > div.navbar_navWideWrapper__CzLb_ > nav > div:nth-child(4) > div > div.navbar-profile-menu_profileWrapper__AugHX > div > a > div > div > p").innerHTML = "69.420 ADA";
+//     } catch (e) {
+//         console.log(e)
+//     }
+// }, 3000);
